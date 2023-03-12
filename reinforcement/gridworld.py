@@ -29,7 +29,7 @@ class Gridworld(mdp.MarkovDecisionProcess):
         self.grid = grid
 
         # parameters
-        self.livingReward = 0.0
+        self.livingReward = -0.10
         self.noise = 0.2
 
     def setLivingReward(self, reward):
@@ -312,13 +312,24 @@ def getMazeGrid():
     return Gridworld(grid)
 
 def getMazeGrid2():
-    grid = [[' ',' ',' ',+1],
-            ['#','#',' ','#'],
-            [+2,'#',' ',' '],
-            [' ','#','#',' '],
-            ['S',' ',' ',' ']]
+    grid = [[' ',' ',' ',+1,' '],
+            ['#','#',' ','#', ' '],
+            [+2,'#',' ',-2, ' '],
+            [' ','#','#',' ', ' '],
+            [' ',' ',' ','S', ' ']]
     return Gridworld(grid)
 
+def getMazeGrid3():
+    grid = [
+    ['#', ' ', ' ', '#', '#', '#', '#', ' ', ' ', +1],
+    ['S', ' ', ' ', ' ', ' ', ' ', ' ', ' ', -2, ' '],
+    ['#', '#', '#', ' ', '#', '#', '#', '#', '#', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    ['#', '#', '#', ' ', '#', '#', ' ', '#', '#', ' '],
+    [' ', '#', ' ', -2, '#', ' ', +1, ' ', ' ', ' '],
+    ['.', '#', ' ', ' ', ' ', ' ', ' ', ' ', ' ', +1]
+]
+    return Gridworld(grid)
 
 
 def getUserAction(state, actionFunction):
@@ -487,7 +498,7 @@ if __name__ == '__main__':
     # GET THE AGENT
     ###########################
 
-    import valueIterationAgents, qlearningAgents, policyIterationAgents, policyIterA
+    import valueIterationAgents, qlearningAgents, policyIterationAgents
     a = None
     if opts.agent == 'value':
         a = valueIterationAgents.ValueIterationAgent(mdp, opts.discount, opts.iters)
@@ -545,7 +556,8 @@ if __name__ == '__main__':
             display.displayQValues(a, message = "Q-VALUES AFTER "+str(opts.iters)+" ITERATIONS")
             display.pause()
     except KeyboardInterrupt:
-        sys.exit(0)
+        print("")
+        #sys.exit(0)
 
 
 
@@ -596,4 +608,5 @@ if __name__ == '__main__':
             display.displayValues(a, message = "VALUES AFTER "+str(opts.episodes)+" EPISODES")
             display.pause()
         except KeyboardInterrupt:
-            sys.exit(0)
+            print("hello")
+            # sys.exit(0)

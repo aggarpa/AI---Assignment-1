@@ -111,6 +111,7 @@ class ValueIterationAgent(ValueEstimationAgent):
         Run value iteration for the specified number of iterations
         or until convergence.
         """
+        num_iterations = 0
         for i in range(self.iterations):
             # Initialize the dictionary of new values
             newValues = util.Counter()
@@ -130,5 +131,20 @@ class ValueIterationAgent(ValueEstimationAgent):
                 # Update the value of the state
                 newValues[state] = maxQValue
 
+            if self.has_converged(self.values, newValues):
+                num_iterations = i + 1
+                print("Convergence reached after", num_iterations, "iterations!")
+                break
             # Update the value function with the new values
             self.values = newValues
+            num_iterations+=1
+
+    def has_converged(self, values, new_values):
+        """
+        Check if the state values have converged.
+        """
+        max_change = max(abs(new_values[s] - values[s]) for s in self.mdp.getStates())
+        if (max_change < 1e-5):
+            print("Convergence reached!")
+            return max_change < 1e-5
+        return

@@ -10,7 +10,6 @@ class PolicyIterationAgent(ValueEstimationAgent):
         self.policy = util.Counter()  # Initialize the policy with an empty dict
         self.iterations = iterations
         self.values = util.Counter() # Initialize the values with 0 for all states
-        self.recurse_count = 0
         self.computePolicy()
 
     def getQValue(self, state, action):
@@ -32,7 +31,7 @@ class PolicyIterationAgent(ValueEstimationAgent):
         self.policy = util.Counter()
         # Initialize the values with 0 for all states
         self.values = util.Counter() #{state: 0 for state in self.mdp.getStates()}
-
+        num_iterations = 0
         for i in range(self.iterations):
             # Policy Evaluation
             # Iterate until the values converge
@@ -50,8 +49,11 @@ class PolicyIterationAgent(ValueEstimationAgent):
 
                 # If the largest change in value is smaller than a threshold, we have converged
                 if delta < 1e-8:
+                    num_iterations = i + 1
+                    print("Convergence reached after", num_iterations, "iterations!")
                     break
-
+                
+                num_iterations+=1
             # Policy Improvement
             # Initialize a flag to keep track of whether the policy has changed
             policyChanged = False
